@@ -15,9 +15,11 @@ namespace OrderManagementApi
 {
     public class Startup
     {
+        private readonly IConfiguration configuration;
+
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this.configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -26,6 +28,7 @@ namespace OrderManagementApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            var connString = configuration.GetConnectionString("DefaultConnection");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
