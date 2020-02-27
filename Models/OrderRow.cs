@@ -14,9 +14,13 @@ namespace OrderManagementApi.Models
         [Required]
         public int? Quantity { get; set; }
         [Required]
+        [Column(TypeName = "decimal(18,4)")]
         public decimal? SingleProductPrice { get; set; }
 
+        [Column(TypeName = "decimal(18,4)")]
         public decimal TotalSum { get; set; }
+
+        [Column(TypeName = "decimal(18,4)")]
         public decimal TotalDiscount { get; set; }
 
         [Required]

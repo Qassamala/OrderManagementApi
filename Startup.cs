@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using OrderManagementApi.DataAccessLayer;
 
 namespace OrderManagementApi
 {
@@ -27,8 +29,17 @@ namespace OrderManagementApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            ////Option 1: Use InMemory database
+            //services.AddDbContext<OrderManagementDbContext>(opts =>
+            //    opts.UseInMemoryDatabase("OrderManagementDb"));
+
+            ////Option 2: Connection String is set in User secrets and connecting to local SQL Server
             var connString = configuration.GetConnectionString("DefaultConnection");
+
+            services.AddDbContext<OrderManagementDbContext>(opts =>
+                opts.UseSqlServer(connString));
+
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

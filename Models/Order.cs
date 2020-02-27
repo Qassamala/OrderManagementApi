@@ -17,8 +17,10 @@ namespace OrderManagementApi.Models
         public long CustomerId { get; set; }
         public virtual Customer Customer { get; set; }
 
+        [Column(TypeName = "decimal(18,4)")]
         public decimal TotalSum { get; set; }
 
+        [Column(TypeName = "decimal(18,4)")]
         public decimal TotalDiscount { get; set; }
 
         public virtual ICollection<OrderRow> Rows { get; set; }
