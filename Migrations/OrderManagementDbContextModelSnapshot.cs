@@ -110,8 +110,9 @@ namespace OrderManagementApi.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,4)");
 
-                    b.Property<int>("ProductType")
-                        .HasColumnType("int");
+                    b.Property<string>("ProductTypeString")
+                        .HasColumnName("ProductType")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
