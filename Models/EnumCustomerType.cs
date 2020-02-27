@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace OrderManagementApi.Models
 {
-    [JsonConverter(typeof(StringEnumConverter))]
     public enum EnumCustomerType
     {
         SmallCompany = 1,
