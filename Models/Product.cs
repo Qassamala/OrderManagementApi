@@ -13,10 +13,19 @@ namespace OrderManagementApi.Models
         public long Id { get; set; }
         
         [Required]
-        public EnumProductType ProductType { get; set; }
-        
-        [Required]
         [Column(TypeName = "decimal(18,4)")]
         public decimal Price { get; set; }
+
+        [NotMapped]
+        public EnumProductType ProductType { get; set; }
+
+        [Column("ProductType")]
+        public string ProductTypeString
+        {
+            get { return ProductType.ToString(); }
+            private set { ProductType = value.ParseEnum<EnumProductType>(); }
+        }
+
+
     }
 }
