@@ -48,10 +48,7 @@ namespace OrderManagementApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutOrder(long id, Order order)
         {
-            if (id != order.Id)
-            {
-                return BadRequest();
-            }
+            order.Id = id;
 
             _context.Entry(order).State = EntityState.Modified;
 
@@ -80,6 +77,11 @@ namespace OrderManagementApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Order>> PostOrder(Order order)
         {
+            if (ModelState.IsValid == false)
+            {
+                return BadRequest(ModelState);
+            }
+
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
