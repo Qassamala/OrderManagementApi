@@ -15,6 +15,7 @@ namespace OrderManagementApi.Models
         public long Id { get; set; }
 
         [Required]
+        [Column(TypeName ="nvarchar(100)")]
         public string Name { get; set; }
 
         [NotMapped]
