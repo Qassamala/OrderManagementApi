@@ -13,5 +13,5 @@ and set the port on line 53 in Startup.cs: app.UseCors(options => options.WithOr
 
 Technologies
 
-C#
+C#,
 ASP.NET
