@@ -18,22 +18,26 @@ namespace OrderManagementApi.Models
         [Column(TypeName ="nvarchar(100)")]
         public string Name { get; set; }
 
-        [NotMapped]
-        public EnumCustomerType CustomerType { get; set; }
+        [Required]
+        [Column(TypeName = "nvarchar(24)")]
+        public string CustomerType { get; set; }
 
-        [Column("CustomerType")]
-        public string CustomerTypeString
-        {
-            get { return CustomerType.ToString(); }
-            private set { CustomerType = value.ParseEnum<EnumCustomerType>(); }
-        }
+        //    [NotMapped]
+        //    public EnumCustomerType CustomerType { get; set; }
 
-    }
-    public static class StringExtensions
-    {
-        public static T ParseEnum<T>(this string value)
-        {
-            return (T)Enum.Parse(typeof(T), value, true);
-        }
+        //    [Column("CustomerType")]
+        //    public string CustomerTypeString
+        //    {
+        //        get { return CustomerType.ToString(); }
+        //        private set { CustomerType = value.ParseEnum<EnumCustomerType>(); }
+        //    }
+
+        //}
+        //public static class StringExtensions
+        //{
+        //    public static T ParseEnum<T>(this string value)
+        //    {
+        //        return (T)Enum.Parse(typeof(T), value, true);
+        //    }
     }
 }

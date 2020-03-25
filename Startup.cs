@@ -29,22 +29,31 @@ namespace OrderManagementApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers().AddNewtonsoftJson();
+
+
             ////Option 1: Use InMemory database
             //services.AddDbContext<OrderManagementDbContext>(opts =>
             //    opts.UseInMemoryDatabase("OrderManagementDb"));
 
-            ////Option 2: Connection String is set in User secrets and connecting to local SQL Server
+            ////Option 2: Connection string is set in User secrets and connecting to local SQL Server
             var connString = configuration.GetConnectionString("DefaultConnection");
 
             services.AddDbContext<OrderManagementDbContext>(opts =>
                 opts.UseSqlServer(connString));
 
-            services.AddControllers();
+            services.AddCors();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            // please add whatever url you have for react app
+            app.UseCors(options => options.WithOrigins("http://localhost:3002")
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
