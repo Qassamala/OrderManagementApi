@@ -59,7 +59,7 @@ namespace OrderManagementApi.Controllers
         // PUT: api/Orders/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
+        [HttpPut("DeleteOrderRow/{id}")]
         public async Task<IActionResult> PutOrder(long id, Order order)
         {
             var originalOrder = _context.Orders
@@ -101,33 +101,32 @@ namespace OrderManagementApi.Controllers
             return NoContent();
         }
 
-        //[HttpPut("Update/{orderId}/{rowId}")]
-        //public async Task<IActionResult> DeleteOrderRowandPutOrder(long orderId, Order order, long rowId)
-        //{
-        //    DeleteRowFromOrder(orderId, rowId);
+        [HttpPut("Update/{orderId}")]
+        public async Task<IActionResult> UpdateOrder(long orderId, Order order)
+        {            
 
-        //    order.Id = orderId;
+            order.Id = orderId;
 
-        //    _context.Entry(order).State = EntityState.Modified;
+            _context.Entry(order).State = EntityState.Modified;
 
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!OrderExists(orderId))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!OrderExists(orderId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
-        //    return NoContent();
-        //}
+            return NoContent();
+        }
 
         // POST: api/Orders
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
