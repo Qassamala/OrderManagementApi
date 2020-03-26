@@ -67,52 +67,21 @@ namespace OrderManagementApi.Controllers
                 .Include(o => o.Rows)
                 .SingleOrDefault();
 
-            order.Id = id;
-
             originalOrder.Rows.ToList().ForEach(r => _context.Entry(r).State = EntityState.Deleted);
 
-            _context.Entry(order).State = EntityState.Modified;
-            _context.Entry(order.Rows).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
 
-            //_context.Orders.Add(order);
+            foreach (var orderRow in order.Rows)
+            {
+                orderRow.Id = 0;
 
+                _context.OrderRows.Add(orderRow);                
+            }
 
-            //var orderEntry = _context.Entry(originalOrder);
+            await _context.SaveChangesAsync();
 
-            //orderEntry.CurrentValues.SetValues(order);
+            _context.Entry(originalOrder).CurrentValues.SetValues(order);
 
-
-            //OrderRow[] rows = order.Rows.ToArray();
-
-            //_context.Entry(order).State = EntityState.Modified;
-
-            //foreach (var orderRow in originalOrder.Rows)
-            //{
-            //    var originalOrderRow = originalOrder.Rows
-            //        .Where(o => o.Id == orderRow.Id && o.Id != 0)
-            //        .SingleOrDefault();
-            //    if (originalOrderRow != null)
-            //    {
-            //        var orderRowEntry = _context.Entry(originalOrderRow);
-            //        orderRowEntry.CurrentValues.SetValues(orderRow);
-            //    }
-            //    else
-            //    {
-            //        orderRow.Id = 0;
-            //        originalOrder.Rows.Add(orderRow);
-            //    }
-
-            //}
-
-            //foreach (var originalOrderRow in originalOrder.Rows.Where(o => o.Id != 0).ToList())
-            //{
-            //    if (!order.Rows.Any(o => o.Id == originalOrderRow.Id))
-            //    {
-            //        _context.OrderRows.Remove(originalOrderRow);
-            //    }
-            //}
-
-            //order.Id = id;
             try
             {
                 await _context.SaveChangesAsync();
@@ -132,33 +101,33 @@ namespace OrderManagementApi.Controllers
             return NoContent();
         }
 
-        [HttpPut("Update/{orderId}/{rowId}")]
-        public async Task<IActionResult> DeleteOrderRowandPutOrder(long orderId, Order order, long rowId)
-        {
-            DeleteRowFromOrder(orderId, rowId);
+        //[HttpPut("Update/{orderId}/{rowId}")]
+        //public async Task<IActionResult> DeleteOrderRowandPutOrder(long orderId, Order order, long rowId)
+        //{
+        //    DeleteRowFromOrder(orderId, rowId);
 
-            order.Id = orderId;
+        //    order.Id = orderId;
 
-            _context.Entry(order).State = EntityState.Modified;
+        //    _context.Entry(order).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!OrderExists(orderId))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!OrderExists(orderId))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
         // POST: api/Orders
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
@@ -193,22 +162,22 @@ namespace OrderManagementApi.Controllers
             return order;
         }
 
-        [HttpDelete("Delete/OrderRow/{orderId}/{rowId}")]
-        public void DeleteRowFromOrder(long orderId, long rowId)
-        {
+        //[HttpDelete("Delete/OrderRow/{orderId}/{rowId}")]
+        //public void DeleteRowFromOrder(long orderId, long rowId)
+        //{
 
-            if (OrderExists(orderId) == false)
-            {
-                throw new ArgumentException("Order not found");
-            }
+        //    if (OrderExists(orderId) == false)
+        //    {
+        //        throw new ArgumentException("Order not found");
+        //    }
 
-            OrderRow row = GetRowInOrder(orderId, rowId);
-            if (row != null)
-            {
-                _context.OrderRows.Remove(row);
-                _context.SaveChanges();
-            }
-        }
+        //    OrderRow row = GetRowInOrder(orderId, rowId);
+        //    if (row != null)
+        //    {
+        //        _context.OrderRows.Remove(row);
+        //        _context.SaveChanges();
+        //    }
+        //}
         public OrderRow GetRowInOrder(long orderId, long rowId)
         {
             return _context.OrderRows.FirstOrDefault(r => r.OrderId == orderId && r.Id == rowId);
