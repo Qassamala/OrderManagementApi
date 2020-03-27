@@ -105,9 +105,14 @@ namespace OrderManagementApi.Controllers
         public async Task<IActionResult> UpdateOrder(long orderId, Order order)
         {            
 
-            order.Id = orderId;
+            //order.Id = orderId;
 
             _context.Entry(order).State = EntityState.Modified;
+
+            foreach (var orderRow in order.Rows)
+            {
+                _context.Entry(orderRow).State = EntityState.Modified;
+            }
 
             try
             {
